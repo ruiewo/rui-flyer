@@ -1,20 +1,8 @@
-import { ChakraProvider } from "@chakra-ui/react";
-
-import { Sidebar } from "./components/Layout/Sidebar";
-
-import { FlyerDataProvider } from "./components/Contexts/FlyerDataProvider";
-import { FlyerLayoutProvider } from "./components/Contexts/FlyerLayoutProvider";
+import { flyerData, layoutData } from "./assets/template/layout";
+import { RuiFlyer } from "./RuiFlyer";
 
 function App() {
-  return (
-    <ChakraProvider>
-      <FlyerLayoutProvider>
-        <FlyerDataProvider>
-          <Sidebar />
-        </FlyerDataProvider>
-      </FlyerLayoutProvider>
-    </ChakraProvider>
-  );
+  return <RuiFlyer layout={layoutData} data={flyerData} />;
 }
 
 export default App;

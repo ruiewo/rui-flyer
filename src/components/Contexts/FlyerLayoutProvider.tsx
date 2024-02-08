@@ -3,7 +3,6 @@ import { PropsWithChildren, useState } from "react";
 import { createContext } from "./createContext";
 
 import { LayoutData } from "../Flyer/schema";
-import { layoutData } from "../../assets/template/layout";
 
 type LayoutContext = {
   layout: LayoutData;
@@ -12,7 +11,10 @@ type LayoutContext = {
 
 const [Provider, useContext] = createContext<LayoutContext>();
 
-export const FlyerLayoutProvider = (props: PropsWithChildren) => {
+export const FlyerLayoutProvider = ({
+  layout: layoutData,
+  children,
+}: PropsWithChildren & { layout: LayoutData }) => {
   const [layout, setLayout] = useState<LayoutData>(layoutData);
 
   return (
@@ -22,7 +24,7 @@ export const FlyerLayoutProvider = (props: PropsWithChildren) => {
         setLayout,
       }}
     >
-      {props.children}
+      {children}
     </Provider>
   );
 };
