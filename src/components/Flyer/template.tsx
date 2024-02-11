@@ -1,15 +1,3 @@
-import {
-  Flex,
-  FlexProps,
-  Table,
-  TableCellProps,
-  TableProps,
-  TableRowProps,
-  Tbody,
-  Td,
-  Tr,
-} from "@chakra-ui/react";
-
 import { useFlyerData } from "../Contexts/FlyerDataProvider";
 import {
   Box,
@@ -26,10 +14,15 @@ import {
 import { FlyerDataValue } from "./schema";
 
 type ReferenceKey = { key: string };
+
+type Style = {
+  style?: React.CSSProperties;
+};
+
 export type TemplateElement =
   | {
       type: "flex";
-      props?: FlexProps;
+      props?: Style;
       children: TemplateElement[];
     }
   | {
@@ -57,19 +50,19 @@ export type TemplateElement =
   | {
       type: "table";
       key: string;
-      props?: TableProps;
-      trProps?: TableRowProps;
+      props?: Style;
+      trProps?: Style;
       children: TemplateElement[];
     }
   | {
       type: "td";
-      props?: TableCellProps;
+      props?: Style;
       children: TemplateElement[];
     }
   | {
       type: "array";
       key: string;
-      props?: TableCellProps; // todo
+      props?: Style;
       children: {
         type: "text";
         props?: Omit<TextProps, "children">;
@@ -84,9 +77,9 @@ export function generateElement(
   switch (node.type) {
     case "flex":
       return (
-        <Flex {...node.props}>
+        <div style={node.props?.style}>
           {node.children.map((x) => generateElement(x, reference))}
-        </Flex>
+        </div>
       );
     case "box":
       return (
@@ -115,22 +108,22 @@ export function generateElement(
       >[];
 
       return (
-        <Table>
-          <Tbody>
+        <table>
+          <tbody>
             {rowList.map((row, i) => (
-              <Tr key={i} {...node.trProps}>
+              <tr key={i} style={node.trProps?.style}>
                 {node.children.map((x) => generateElement(x, row))}
-              </Tr>
+              </tr>
             ))}
-          </Tbody>
-        </Table>
+          </tbody>
+        </table>
       );
     }
     case "td":
       return (
-        <Td {...node.props}>
+        <td style={node.props?.style}>
           {node.children.map((x) => generateElement(x, reference))}
-        </Td>
+        </td>
       );
 
     case "array": {
@@ -151,7 +144,7 @@ type GridAreaProps = { gridArea: string; template: TemplateElement };
 export const GridArea = ({ gridArea, template }: GridAreaProps) => {
   const referenceData = useFlyerData().data[gridArea];
 
-  template.props = { ...template.props, gridArea };
+  template.props.style = { ...template.props.style, gridArea };
 
   return generateElement(template, referenceData);
 };

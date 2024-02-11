@@ -7,6 +7,8 @@ import { GridArea } from "./template";
 type FlyerProps = {
   layout: LayoutData;
 };
+
+// todo remove chakra
 export const Flyer = ({ layout }: FlyerProps) => {
   return (
     <Grid

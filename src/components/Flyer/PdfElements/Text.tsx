@@ -1,17 +1,15 @@
-import { Text as ChakraText } from "@chakra-ui/react"
+import { pdfElementType } from "../utils";
 
-import { pdfElementType } from "../utils"
-
-import { commonProps } from "./pdfElement"
+import { commonProps } from "./pdfElement";
 
 export type TextProps = {
-  children: string
-  color?: string
-  fontSize?: string
-  fontWeight?: string
-  border?: string
-  whiteSpace?: string
-}
+  children: string;
+  color?: string;
+  fontSize?: string;
+  fontWeight?: string;
+  border?: string;
+  whiteSpace?: string;
+};
 
 const defaultProps = {
   color: "#555",
@@ -19,14 +17,17 @@ const defaultProps = {
   fontWeight: "normal",
   border: "none",
   whiteSpace: "pre-wrap",
-}
+};
 
 export const Text = (props: TextProps) => (
-  <ChakraText
-    display="flex"
+  <p
     {...commonProps}
     data-pdf-element-type={pdfElementType.text}
-    {...defaultProps}
-    {...props}
+    style={{
+      display: "flex",
+      ...defaultProps,
+      ...props,
+    }}
+    children={props.children}
   />
-)
+);

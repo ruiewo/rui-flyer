@@ -1,32 +1,46 @@
-import { Box } from "@chakra-ui/react"
+import { pdfElementType } from "../utils";
 
-import { pdfElementType } from "../utils"
+import { commonProps } from "./pdfElement";
 
-import { commonProps } from "./pdfElement"
+const defaultColor = "#555";
 
-type LineProps = {
-  orientation: "vertical" | "horizontal"
-  borderWidth: string
-  color?: string
-}
+type BaseLineProps = {
+  width: string;
+  height: string;
+  color?: string;
+};
 
-const Line = ({ orientation, borderWidth, color = "#555" }: LineProps) => (
-  <Box
+const Line = ({ width, height, color = "#555" }: BaseLineProps) => (
+  <div
     {...commonProps}
     data-pdf-element-type={pdfElementType.line}
-    h={orientation === "vertical" ? "100%" : "1px"}
-    w={orientation === "vertical" ? "1px" : "100%"}
-    borderWidth={borderWidth}
-    borderColor={color}
+    style={{
+      height,
+      width,
+      backgroundColor: color,
+    }}
   />
-)
+);
 
-export type VLineProps = Pick<LineProps, "borderWidth" | "color">
-export const VLine = (props: { borderWidth: string; color?: string }) => (
-  <Line {...props} orientation="vertical" />
-)
+type LineProps = {
+  width: string;
+  color?: string;
+};
 
-export type HLineProps = Pick<LineProps, "borderWidth" | "color">
-export const HLine = (props: { borderWidth: string; color?: string }) => (
-  <Line {...props} orientation="horizontal" />
-)
+export type VLineProps = LineProps;
+export const VLine = ({
+  width,
+  color = defaultColor,
+}: {
+  width: string;
+  color?: string;
+}) => <Line width={width} height="100%" color={color} />;
+
+export type HLineProps = LineProps;
+export const HLine = ({
+  width,
+  color = defaultColor,
+}: {
+  width: string;
+  color?: string;
+}) => <Line width="100%" height={width} color={color} />;
