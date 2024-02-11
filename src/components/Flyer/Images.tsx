@@ -1,9 +1,5 @@
 import {
-  Box,
-  BoxProps,
   Button,
-  Grid,
-  GridItem,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -19,8 +15,9 @@ import Cropper, { Area } from "react-easy-crop";
 import { useFlyerData } from "../Contexts/FlyerDataProvider";
 import { Image as PdfImage } from "./PdfElements";
 
-export const Images = (props: BoxProps) => {
+export const Images = ({ gridArea }: { gridArea: string }) => {
   const { data, setData } = useFlyerData();
+  const imageData = data[gridArea];
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [aspect, setAspect] = useState(4 / 3);
   const [src, setSrc] = useState("");
@@ -33,10 +30,13 @@ export const Images = (props: BoxProps) => {
   ) => {
     try {
       const croppedImage = await getCroppedImg(imgSrc, croppedAreaPixels);
-      const newImages = data.images.images.map((x, j) =>
+      const newImages = imageData.images!.map((x, j) =>
         i === j ? { ...x, src: croppedImage } : x
       );
-      setData({ ...data, images: { ...data.images, images: newImages } });
+      setData((x) => ({
+        ...x,
+        [gridArea]: { ...imageData, images: newImages },
+      }));
     } catch (e) {
       console.error(e);
     }
@@ -44,34 +44,35 @@ export const Images = (props: BoxProps) => {
 
   return (
     <>
-      <Box {...props} px={3} py={1}>
-        <Grid
-          w="100%"
-          h="100%"
-          templateRows="repeat(2, 1fr)"
-          templateColumns="repeat(2, 1fr)"
-        >
-          {data.images.images.map(({ src, ...x }, i) => (
-            <GridItem key={src} {...x} position="relative">
-              <PdfImage
-                src={src}
-                alt=""
-                width="100%"
-                height="100%"
-                onClick={(e) => {
-                  const parent = (e.target as HTMLElement).parentElement!;
+      <div
+        style={{
+          display: "grid",
+          gridTemplateRows: "repeat(2, 1fr)",
+          gridTemplateColumns: "repeat(2, 1fr)",
+          padding: "0.25rem 0.75rem",
+          width: "100%",
+          height: "100%",
+        }}
+      >
+        {imageData.images!.map(({ src, ...x }, i) => (
+          <div key={src} {...x}>
+            <PdfImage
+              src={src}
+              width="100%"
+              height="100%"
+              onClick={(e) => {
+                const parent = (e.target as HTMLElement).parentElement!;
 
-                  const aspect = parent.offsetWidth / parent.offsetHeight;
-                  setAspect(aspect);
-                  setSrc(src);
-                  setIndex(i);
-                  onOpen();
-                }}
-              />
-            </GridItem>
-          ))}
-        </Grid>
-      </Box>
+                const aspect = parent.offsetWidth / parent.offsetHeight;
+                setAspect(aspect);
+                setSrc(src);
+                setIndex(i);
+                onOpen();
+              }}
+            />
+          </div>
+        ))}
+      </div>
       <Modal isOpen={isOpen} onClose={onClose} size="full">
         <ModalOverlay />
         <FormModalContent
