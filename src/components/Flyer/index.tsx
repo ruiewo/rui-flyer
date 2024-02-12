@@ -1,12 +1,13 @@
-import { Images } from "./Images";
+import { GridArea } from "./Area/GridArea";
+import { ImageArea, OnImageSelect } from "./Area/ImageArea";
 import { LayoutData } from "./schema";
-import { GridArea } from "./template";
 
 type FlyerProps = {
   layout: LayoutData;
+  onImageClick: OnImageSelect;
 };
 
-export const Flyer = ({ layout }: FlyerProps) => {
+export const Flyer = ({ layout, onImageClick }: FlyerProps) => {
   return (
     <div
       className="flyerRoot"
@@ -22,7 +23,11 @@ export const Flyer = ({ layout }: FlyerProps) => {
     >
       {layout.areas.map((area) =>
         area.type === "image" ? (
-          <Images key={area.id} gridArea={area.id} />
+          <ImageArea
+            key={area.id}
+            gridArea={area.id}
+            onImageClick={onImageClick}
+          />
         ) : (
           <GridArea key={area.id} gridArea={area.id} template={area.template} />
         )

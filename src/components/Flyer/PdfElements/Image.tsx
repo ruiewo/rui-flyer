@@ -1,8 +1,8 @@
-import { pdfElementType } from "../utils"
+import { pdfElementType } from "../utils";
 
-import { commonProps } from "./pdfElement"
+import { commonProps } from "./pdfElement";
 
-export type ImageProps = React.ComponentProps<"img">
+export type ImageProps = React.ComponentProps<"img">;
 export const Image = (props: ImageProps) => {
   return (
     <img
@@ -15,5 +15,5 @@ export const Image = (props: ImageProps) => {
       }}
       {...props}
     />
-  )
-}
+  );
+};

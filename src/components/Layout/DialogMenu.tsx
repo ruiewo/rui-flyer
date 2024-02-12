@@ -16,16 +16,16 @@ import {
 import { FieldPath, FormProvider, useForm } from "react-hook-form";
 import { IconType } from "react-icons";
 
-import { useFlyerData } from "./Contexts/FlyerDataProvider";
-import { FlyerDataValue } from "./Flyer/schema";
-import { NavItem } from "./Sidebar/NavItem";
+import { useFlyerData } from "../Contexts/FlyerDataProvider";
+import { FlyerDataValue } from "../Flyer/schema";
+import { NavItem } from "./NavItem";
 
 type DialogMenuProps = {
   label: string;
   icon: IconType;
-  type: string;
+  area: string;
 };
-export const DialogMenu = ({ label, icon, type }: DialogMenuProps) => {
+export const DialogMenu = ({ label, icon, area }: DialogMenuProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -34,25 +34,25 @@ export const DialogMenu = ({ label, icon, type }: DialogMenuProps) => {
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <FormModalContent type={type} />
+        <FormModalContent area={area} />
       </Modal>
     </>
   );
 };
 
 type FormModalContentProps = {
-  type: string;
+  area: string;
 };
 
-const FormModalContent = ({ type }: FormModalContentProps) => {
+const FormModalContent = ({ area }: FormModalContentProps) => {
   const { onClose } = useModalContext();
 
   const { data, setData } = useFlyerData();
-  const partsData = data[type];
-  const methods = useForm<FlyerDataValue>({ defaultValues: partsData });
+  const areaData = data[area];
+  const methods = useForm<FlyerDataValue>({ defaultValues: areaData });
 
   const onSubmit = methods.handleSubmit((data) => {
-    setData((x) => ({ ...x, [type]: data }));
+    setData((x) => ({ ...x, [area]: data }));
     onClose();
   });
 
@@ -69,7 +69,7 @@ const FormModalContent = ({ type }: FormModalContentProps) => {
         <ModalHeader>ヘッダー</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          {Object.entries(partsData).map(([key, value]: [string, any]) => {
+          {Object.entries(areaData).map(([key, value]: [string, any]) => {
             if (Array.isArray(value)) {
               return value.map((x, i) =>
                 Object.keys(x).map((key2) => (

@@ -11,12 +11,14 @@ import {
 import DomToImage from "dom-to-image";
 import { FiHome, FiStar, FiPrinter } from "react-icons/fi";
 
-import { DialogMenu } from "../DialogMenu";
+import { DialogMenu } from "./DialogMenu";
 import { Flyer } from "../Flyer";
-import { NavItem } from "../Sidebar/NavItem";
+import { NavItem } from "./NavItem";
 
 import { Header } from "./Header";
 import { useLayout } from "../Contexts/FlyerLayoutProvider";
+import { ImageClopDialogProps, ImageCropDialog } from "./ImageCropDialog";
+import { useState } from "react";
 
 interface SidebarProps extends BoxProps {
   onClose: () => void;
@@ -46,7 +48,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
           key={index}
           label={item.text}
           icon={FiStar}
-          type={item.id}
+          area={item.id}
         />
       ))}
 
@@ -75,6 +77,25 @@ export const Sidebar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { layout } = useLayout();
 
+  const {
+    isOpen: isCropDialogOpen,
+    onOpen: onCropDialogOpen,
+    onClose: onCropDialogClose,
+  } = useDisclosure();
+
+  const [imageCropProps, setImageCropProps] = useState<ImageClopDialogProps>({
+    area: "",
+    index: 0,
+    src: "",
+    width: 0,
+    height: 0,
+  });
+
+  const onImageClick = (data: ImageClopDialogProps) => {
+    setImageCropProps(data);
+    onCropDialogOpen();
+  };
+
   return (
     <Box w="100vw" minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
       <SidebarContent
@@ -95,8 +116,14 @@ export const Sidebar = () => {
       </Drawer>
       <Header onOpen={onOpen} />
       <Box ml={{ base: 0, md: 60 }} p="4">
-        <Flyer layout={layout} />
+        <Flyer layout={layout} onImageClick={onImageClick} />
       </Box>
+      <ImageCropDialog
+        {...imageCropProps}
+        isOpen={isCropDialogOpen}
+        onOpen={onCropDialogOpen}
+        onClose={onCropDialogClose}
+      />
     </Box>
   );
 };

@@ -1,11 +1,11 @@
-import { Box, Flex, FlexProps, Icon } from "@chakra-ui/react"
-import { IconType } from "react-icons"
+import { Box, Flex, FlexProps, Icon } from "@chakra-ui/react";
+import { IconType } from "react-icons";
 
 export type NavItemProps = Omit<FlexProps, "children"> & {
-  icon: IconType
-  label: string
-  onClick?: () => void
-}
+  icon: IconType;
+  label: string;
+  onClick?: () => void;
+};
 export const NavItem = ({ icon, onClick, label, ...rest }: NavItemProps) => {
   return (
     <Box
@@ -41,5 +41,5 @@ export const NavItem = ({ icon, onClick, label, ...rest }: NavItemProps) => {
         {label}
       </Flex>
     </Box>
-  )
-}
+  );
+};
