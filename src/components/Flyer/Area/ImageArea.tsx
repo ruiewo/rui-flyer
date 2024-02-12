@@ -1,8 +1,9 @@
-import { useFlyerData } from "../../Contexts/FlyerDataProvider";
 import { Image } from "../PdfElements";
+import { FlyerData } from "../schema";
 
 type ImageAreaProps = {
   gridArea: string;
+  data: FlyerData;
   onImageClick: OnImageSelect;
 };
 
@@ -16,8 +17,8 @@ export type OnImageClick = {
 
 export type OnImageSelect = (props: OnImageClick) => void;
 
-export const ImageArea = ({ gridArea, onImageClick }: ImageAreaProps) => {
-  const imageData = useFlyerData().data[gridArea];
+export const ImageArea = ({ gridArea, data, onImageClick }: ImageAreaProps) => {
+  const imageData = data[gridArea];
 
   return (
     <div

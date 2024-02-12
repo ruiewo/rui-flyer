@@ -1,13 +1,14 @@
 import { GridArea } from "./Area/GridArea";
 import { ImageArea, OnImageSelect } from "./Area/ImageArea";
-import { LayoutData } from "./schema";
+import { FlyerData, LayoutData } from "./schema";
 
 type FlyerProps = {
   layout: LayoutData;
+  data: FlyerData;
   onImageClick: OnImageSelect;
 };
 
-export const Flyer = ({ layout, onImageClick }: FlyerProps) => {
+export const Flyer = ({ layout, data, onImageClick }: FlyerProps) => {
   return (
     <div
       className="flyerRoot"
@@ -26,10 +27,16 @@ export const Flyer = ({ layout, onImageClick }: FlyerProps) => {
           <ImageArea
             key={area.id}
             gridArea={area.id}
+            data={data}
             onImageClick={onImageClick}
           />
         ) : (
-          <GridArea key={area.id} gridArea={area.id} template={area.template} />
+          <GridArea
+            key={area.id}
+            gridArea={area.id}
+            template={area.template}
+            data={data}
+          />
         )
       )}
     </div>

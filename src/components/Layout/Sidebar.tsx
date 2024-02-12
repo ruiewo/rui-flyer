@@ -19,6 +19,7 @@ import { Header } from "./Header";
 import { useLayout } from "../Contexts/FlyerLayoutProvider";
 import { ImageClopDialogProps, ImageCropDialog } from "./ImageCropDialog";
 import { useState } from "react";
+import { useFlyerData } from "../Contexts/FlyerDataProvider";
 
 interface SidebarProps extends BoxProps {
   onClose: () => void;
@@ -38,7 +39,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       {...rest}
     >
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-        <img src="/logo.svg" width={80} height={30} />
+        <img src="/logo/logo.svg" width={80} height={30} />
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
 
@@ -76,6 +77,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
 export const Sidebar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { layout } = useLayout();
+  const { data } = useFlyerData();
 
   const {
     isOpen: isCropDialogOpen,
@@ -116,7 +118,7 @@ export const Sidebar = () => {
       </Drawer>
       <Header onOpen={onOpen} />
       <Box ml={{ base: 0, md: 60 }} p="4">
-        <Flyer layout={layout} onImageClick={onImageClick} />
+        <Flyer layout={layout} data={data} onImageClick={onImageClick} />
       </Box>
       <ImageCropDialog
         {...imageCropProps}

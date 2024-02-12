@@ -66,7 +66,7 @@ export const Header = ({ onOpen, ...rest }: Props) => {
               _focus={{ boxShadow: "none" }}
             >
               <HStack>
-                <Avatar size="sm" src="/logo.svg" />
+                <Avatar size="sm" src="/logo/logo_face2.svg" />
                 <VStack
                   display={{ base: "none", md: "flex" }}
                   alignItems="flex-start"
