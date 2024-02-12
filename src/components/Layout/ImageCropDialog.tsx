@@ -8,7 +8,7 @@ import {
   ModalOverlay,
   useModalContext,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Cropper, { Area } from "react-easy-crop";
 import { getCroppedImg } from "../Flyer/Area/ImageAreaUtil";
 import { useFlyerData } from "../Contexts/FlyerDataProvider";
@@ -86,10 +86,10 @@ const FormModalContent = ({
 
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area>({});
+  const areaRef = useRef({ width: 0, height: 0, x: 0, y: 0 });
 
   const onCropComplete = (croppedArea: Area, croppedAreaPixels: Area) => {
-    setCroppedAreaPixels(croppedAreaPixels);
+    areaRef.current = croppedAreaPixels;
   };
 
   return (
@@ -111,7 +111,7 @@ const FormModalContent = ({
         <Button
           colorScheme="blue"
           onClick={async () => {
-            await updateImage(index, src, croppedAreaPixels);
+            await updateImage(index, src, areaRef.current);
             onClose();
           }}
         >
