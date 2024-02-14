@@ -1,5 +1,5 @@
 import { Image } from "../PdfElements";
-import { FlyerData } from "../schema";
+import { FlyerData, FlyerImageDataValue } from "../schema";
 
 type ImageAreaProps = {
   gridArea: string;
@@ -18,39 +18,37 @@ export type OnImageClick = {
 export type OnImageSelect = (props: OnImageClick) => void;
 
 export const ImageArea = ({ gridArea, data, onImageClick }: ImageAreaProps) => {
-  const imageData = data[gridArea];
+  const imageData = data[gridArea] as FlyerImageDataValue;
+  imageData.props.style = { ...imageData.props.style, gridArea };
+
+  const maxImageCount = imageData.props.count;
 
   return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateRows: "repeat(2, minmax(0, 1fr))",
-        gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
-        padding: "0.25rem 0.75rem",
-        width: "100%",
-        height: "100%",
-      }}
-    >
-      {imageData.images!.map(({ src, ...x }, i) => (
-        <div key={i} {...x}>
-          <Image
-            src={src}
-            onClick={(e) => {
-              const parent = (e.target as HTMLElement).parentElement!;
+    <div {...imageData.props}>
+      {imageData.images!.map(
+        ({ src, ...x }, i) =>
+          i < maxImageCount && (
+            <div key={i} {...x} style={{ gridArea: `area${i}` }}>
+              <Image
+                key={i}
+                src={src}
+                onClick={(e) => {
+                  const parent = (e.target as HTMLElement).parentElement!;
 
-              const data = {
-                area: gridArea,
-                index: i,
-                src,
-                width: parent.offsetWidth,
-                height: parent.offsetHeight,
-              };
+                  const data = {
+                    area: gridArea,
+                    index: i,
+                    src,
+                    width: parent.offsetWidth,
+                    height: parent.offsetHeight,
+                  };
 
-              onImageClick(data);
-            }}
-          />
-        </div>
-      ))}
+                  onImageClick(data);
+                }}
+              />
+            </div>
+          )
+      )}
     </div>
   );
 };

@@ -44,12 +44,13 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       </Flex>
 
       <NavItem icon={FiHome} label="Home" />
-      {layout.areas.map((item, index) => (
+      {layout.areas.map((area, index) => (
         <DialogMenu
           key={index}
-          label={item.text}
+          label={area.text}
           icon={FiStar}
-          area={item.id}
+          area={area.id}
+          type={area.type}
         />
       ))}
 

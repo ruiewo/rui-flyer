@@ -16,6 +16,7 @@ import {
   Card,
   CardBody,
   VStack,
+  Flex,
 } from "@chakra-ui/react";
 import {
   FieldPath,
@@ -26,15 +27,16 @@ import {
 import { IconType } from "react-icons";
 
 import { useFlyerData } from "../Contexts/FlyerDataProvider";
-import { FlyerDataValue } from "../Flyer/schema";
+import { Area, FlyerDataValue, FlyerImageDataValue } from "../Flyer/schema";
 import { NavItem } from "./NavItem";
 
 type DialogMenuProps = {
   label: string;
   icon: IconType;
   area: string;
+  type: Area["type"];
 };
-export const DialogMenu = ({ label, icon, area }: DialogMenuProps) => {
+export const DialogMenu = ({ label, icon, area, type }: DialogMenuProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -43,17 +45,19 @@ export const DialogMenu = ({ label, icon, area }: DialogMenuProps) => {
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <FormModalContent area={area} />
+        <FormModalContent label={label} area={area} type={type} />
       </Modal>
     </>
   );
 };
 
 type FormModalContentProps = {
+  label: string;
   area: string;
+  type: Area["type"];
 };
 
-const FormModalContent = ({ area }: FormModalContentProps) => {
+const FormModalContent = ({ label, area, type }: FormModalContentProps) => {
   const { onClose } = useModalContext();
 
   const { data, setData } = useFlyerData();
@@ -75,16 +79,56 @@ const FormModalContent = ({ area }: FormModalContentProps) => {
   return (
     <FormProvider {...methods}>
       <ModalContent as="form" onSubmit={onSubmit}>
-        <ModalHeader>ヘッダー</ModalHeader>
+        <ModalHeader>{label}</ModalHeader>
         <ModalCloseButton />
         <ModalBody display="flex" flexDirection="column" gap={3}>
-          {Object.entries(areaData).map(([key, value]: [string, any]) => {
-            if (Array.isArray(value)) {
-              return <ArrayInput key={key} area={key} items={value} />;
-            }
+          {type === "image" ? (
+            <Flex gap={3}>
+              <GridLayout
+                area={area}
+                gridTemplate={`
+"area0 area3" minmax(0, 1fr)
+"area0 area3" minmax(0, 1fr)
+"area1 area3" minmax(0, 1fr)
+"area1 area4" minmax(0, 1fr)
+"area2 area4" minmax(0, 1fr)
+"area2 area4" minmax(0, 1fr)
+/ minmax(0, 1fr) minmax(0, 1fr)`}
+                count={5}
+              />
+              <GridLayout
+                area={area}
+                gridTemplate={`
+"area0 area0 area1 area1 area2 area2" minmax(0, 1fr)
+"area3 area3 area3 area4 area4 area4" minmax(0, 1fr)
+/ minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr)`}
+                count={5}
+              />
+              <GridLayout
+                area={area}
+                gridTemplate={`
+"area0 area1" minmax(0, 1fr)
+/ minmax(0, 2fr) minmax(0, 1fr)`}
+                count={2}
+              />
+              <GridLayout
+                area={area}
+                gridTemplate={`
+"area0 area2" minmax(0, 1fr)
+"area1 area2" minmax(0, 1fr)
+/ minmax(0, 1fr) minmax(0, 1fr)`}
+                count={3}
+              />
+            </Flex>
+          ) : (
+            Object.entries(areaData).map(([key, value]: [string, any]) => {
+              if (Array.isArray(value)) {
+                return <ArrayInput key={key} area={key} items={value} />;
+              }
 
-            return <FormInput key={key} formKey={key} />;
-          })}
+              return <FormInput key={key} formKey={key} />;
+            })
+          )}
         </ModalBody>
 
         <ModalFooter>
@@ -126,5 +170,62 @@ const ArrayInput = ({
         ))}
       </VStack>
     </VStack>
+  );
+};
+
+type GridLayoutProps = {
+  area: string;
+  gridTemplateColumns?: string;
+  gridTemplateRows?: string;
+  gridTemplate: string;
+  count: number;
+};
+
+const GridLayout = ({
+  area,
+  gridTemplateColumns,
+  gridTemplateRows,
+  gridTemplate,
+  count,
+}: GridLayoutProps) => {
+  const { setData } = useFlyerData();
+
+  return (
+    <div
+      style={{
+        width: "100px",
+        height: "100px",
+        display: "grid",
+        gridTemplateColumns,
+        gridTemplateRows,
+        gridTemplate,
+        gap: "3px",
+        padding: "3px",
+        backgroundColor: "lightgray",
+      }}
+      onClick={() => {
+        setData((x) => {
+          const data = x[area] as FlyerImageDataValue;
+          const newData = {
+            ...data,
+            props: {
+              style: {
+                ...data.props.style,
+                gridTemplate,
+              },
+              count,
+            },
+          };
+          return { ...x, [area]: newData };
+        });
+      }}
+    >
+      {Array.from({ length: count }).map((_, i) => (
+        <div
+          key={i}
+          style={{ backgroundColor: "white", gridArea: `area${i}` }}
+        />
+      ))}
+    </div>
   );
 };

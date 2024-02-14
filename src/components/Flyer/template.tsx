@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import {
   Box,
   BoxProps,
@@ -74,33 +75,34 @@ export function generateElement(
   reference: FlyerDataValue,
   index?: number | undefined
 ): JSX.Element | null {
+  const key = index ?? "";
   switch (node.type) {
     case "flex":
       return (
-        <div key={index ? index : ""} style={node.props?.style}>
+        <div key={key} style={node.props?.style}>
           {node.children.map((x, i) => generateElement(x, reference, i))}
         </div>
       );
     case "box":
       return (
-        <Box key={index ? index : ""} {...node.props}>
+        <Box key={key} {...node.props}>
           {node.children.map((x, i) => generateElement(x, reference, i))}
         </Box>
       );
     case "text":
       return (
-        <Text key={index ? index : ""} {...node.props}>
+        <Text key={key} {...node.props}>
           {typeof node.children === "string"
             ? node.children
             : (reference[node.children.key] as unknown as string)}
         </Text>
       );
     case "hline":
-      return <HLine key={index ? index : ""} {...node.props} />;
+      return <HLine key={key} {...node.props} />;
     case "vline":
-      return <VLine key={index ? index : ""} {...node.props} />;
+      return <VLine key={key} {...node.props} />;
     case "image":
-      return <Image key={index ? index : ""} {...node.props} />;
+      return <Image key={key} {...node.props} />;
     case "table": {
       const rowList = reference[node.key] as unknown as Record<
         string,
@@ -108,7 +110,7 @@ export function generateElement(
       >[];
 
       return (
-        <table key={index ? index : ""}>
+        <table key={key}>
           <tbody>
             {rowList.map((row, i) => (
               <tr key={i} style={node.trProps?.style}>
@@ -121,7 +123,7 @@ export function generateElement(
     }
     case "td":
       return (
-        <td key={index ? index : ""} style={node.props?.style}>
+        <td key={key} style={node.props?.style}>
           {node.children.map((x, i) => generateElement(x, reference, i))}
         </td>
       );
@@ -132,7 +134,9 @@ export function generateElement(
         string
       >[];
       return (
-        <>{dataList.map((x, i) => generateElement(node.children, x, i))}</>
+        <Fragment key={key}>
+          {dataList.map((x, i) => generateElement(node.children, x, i))}
+        </Fragment>
       );
     }
 
