@@ -26,6 +26,7 @@ export const NavItem = ({ icon, onClick, label, ...rest }: NavItemProps) => {
           bg: "cyan.400",
           color: "white",
         }}
+        fontWeight="semibold"
         {...rest}
       >
         {icon && (

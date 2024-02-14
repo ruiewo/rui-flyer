@@ -9,7 +9,7 @@ import {
   BoxProps,
 } from "@chakra-ui/react";
 import DomToImage from "dom-to-image";
-import { FiHome, FiStar, FiPrinter } from "react-icons/fi";
+import { FiHome, FiPrinter } from "react-icons/fi";
 
 import { DialogMenu } from "./DialogMenu";
 import { Flyer } from "../Flyer";
@@ -48,7 +48,6 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <DialogMenu
           key={index}
           label={area.text}
-          icon={FiStar}
           area={area.id}
           type={area.type}
         />

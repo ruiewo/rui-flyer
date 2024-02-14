@@ -24,7 +24,7 @@ import {
   useForm,
   useFormContext,
 } from "react-hook-form";
-import { IconType } from "react-icons";
+import { FiImage, FiStar } from "react-icons/fi";
 
 import { useFlyerData } from "../Contexts/FlyerDataProvider";
 import { Area, FlyerDataValue, FlyerImageDataValue } from "../Flyer/schema";
@@ -32,16 +32,19 @@ import { NavItem } from "./NavItem";
 
 type DialogMenuProps = {
   label: string;
-  icon: IconType;
   area: string;
   type: Area["type"];
 };
-export const DialogMenu = ({ label, icon, area, type }: DialogMenuProps) => {
+export const DialogMenu = ({ label, area, type }: DialogMenuProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
-      <NavItem icon={icon} label={label} onClick={onOpen} />
+      <NavItem
+        icon={type === "image" ? FiImage : FiStar}
+        label={label}
+        onClick={onOpen}
+      />
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
