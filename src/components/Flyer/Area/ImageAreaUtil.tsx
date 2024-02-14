@@ -9,33 +9,29 @@ const createImage = (url: string): Promise<HTMLImageElement> =>
     image.src = url;
   });
 
-export async function getCroppedImg(
-  imageSrc: string,
-  pixelCrop: Area
-): Promise<string> {
+export async function getCroppedImg(imageSrc: string, pixelCrop: Area) {
   const image = await createImage(imageSrc);
   const canvas = document.createElement("canvas");
+  canvas.width = pixelCrop.width;
+  canvas.height = pixelCrop.height;
   const ctx = canvas.getContext("2d");
   if (!ctx) {
-    return "";
+    throw new Error("Could not create canvas context");
   }
 
-  canvas.width = image.width;
-  canvas.height = image.height;
-
-  ctx.drawImage(image, 0, 0);
-
-  const data = ctx.getImageData(
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(
+    image,
     pixelCrop.x,
     pixelCrop.y,
     pixelCrop.width,
+    pixelCrop.height,
+    0,
+    0,
+    pixelCrop.width,
     pixelCrop.height
   );
-
-  canvas.width = pixelCrop.width;
-  canvas.height = pixelCrop.height;
-
-  ctx.putImageData(data, 0, 0);
 
   return canvas.toDataURL("jpg");
 }

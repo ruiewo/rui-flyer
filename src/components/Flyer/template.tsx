@@ -94,7 +94,8 @@ export function generateElement(
         <Text key={key} {...node.props}>
           {typeof node.children === "string"
             ? node.children
-            : (reference[node.children.key] as unknown as string)}
+            : // @ts-ignore
+              (reference[node.children.key] as unknown as string)}
         </Text>
       );
     case "hline":
@@ -104,6 +105,7 @@ export function generateElement(
     case "image":
       return <Image key={key} {...node.props} />;
     case "table": {
+      // @ts-ignore
       const rowList = reference[node.key] as unknown as Record<
         string,
         string
@@ -129,6 +131,7 @@ export function generateElement(
       );
 
     case "array": {
+      // @ts-ignore
       const dataList = reference[node.key] as unknown as Record<
         string,
         string

@@ -28,7 +28,11 @@ export const ImageArea = ({ gridArea, data, onImageClick }: ImageAreaProps) => {
       {imageData.images!.map(
         ({ src, ...x }, i) =>
           i < maxImageCount && (
-            <div key={i} {...x} style={{ gridArea: `area${i}` }}>
+            <div
+              key={i}
+              {...x}
+              style={{ gridArea: `area${i}`, position: "relative" }}
+            >
               <Image
                 key={i}
                 src={src}
