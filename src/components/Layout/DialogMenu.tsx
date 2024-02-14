@@ -12,8 +12,17 @@ import {
   FormLabel,
   Input,
   useModalContext,
+  Heading,
+  Card,
+  CardBody,
+  VStack,
 } from "@chakra-ui/react";
-import { FieldPath, FormProvider, useForm } from "react-hook-form";
+import {
+  FieldPath,
+  FormProvider,
+  useForm,
+  useFormContext,
+} from "react-hook-form";
 import { IconType } from "react-icons";
 
 import { useFlyerData } from "../Contexts/FlyerDataProvider";
@@ -68,17 +77,10 @@ const FormModalContent = ({ area }: FormModalContentProps) => {
       <ModalContent as="form" onSubmit={onSubmit}>
         <ModalHeader>ヘッダー</ModalHeader>
         <ModalCloseButton />
-        <ModalBody>
+        <ModalBody display="flex" flexDirection="column" gap={3}>
           {Object.entries(areaData).map(([key, value]: [string, any]) => {
             if (Array.isArray(value)) {
-              return value.map((x, i) =>
-                Object.keys(x).map((key2) => (
-                  <FormInput
-                    key={`${key}.${i}.${key2}`}
-                    formKey={`${key}.${i}.${key2}`}
-                  />
-                ))
-              );
+              return <ArrayInput key={key} area={key} items={value} />;
             }
 
             return <FormInput key={key} formKey={key} />;
@@ -92,5 +94,37 @@ const FormModalContent = ({ area }: FormModalContentProps) => {
         </ModalFooter>
       </ModalContent>
     </FormProvider>
+  );
+};
+
+const ArrayInput = ({
+  area,
+  items,
+}: {
+  area: string;
+  items: Record<string, string>[];
+}) => {
+  const register = useFormContext().register;
+
+  return (
+    <VStack>
+      <Heading size="md" textAlign="left" w="100%">
+        {area}
+      </Heading>
+      <VStack border="0" borderLeft="1px solid lightgray" w="100%" px={3}>
+        {items.map((x, i) => (
+          <Card key={`${area}.${i}`} w="100%" variant="outline">
+            <CardBody gap={3} display="flex" flexDirection="column">
+              {Object.keys(x).map((key) => (
+                <FormControl key={`${area}.${i}.${key}`}>
+                  <FormLabel>{key}</FormLabel>
+                  <Input type="text" {...register(`${area}.${i}.${key}`)} />
+                </FormControl>
+              ))}
+            </CardBody>
+          </Card>
+        ))}
+      </VStack>
+    </VStack>
   );
 };

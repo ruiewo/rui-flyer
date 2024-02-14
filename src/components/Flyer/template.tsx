@@ -71,35 +71,36 @@ export type TemplateElement =
 
 export function generateElement(
   node: TemplateElement,
-  reference: FlyerDataValue
+  reference: FlyerDataValue,
+  index?: number | undefined
 ): JSX.Element | null {
   switch (node.type) {
     case "flex":
       return (
-        <div style={node.props?.style}>
-          {node.children.map((x) => generateElement(x, reference))}
+        <div key={index ? index : ""} style={node.props?.style}>
+          {node.children.map((x, i) => generateElement(x, reference, i))}
         </div>
       );
     case "box":
       return (
-        <Box {...node.props}>
-          {node.children.map((x) => generateElement(x, reference))}
+        <Box key={index ? index : ""} {...node.props}>
+          {node.children.map((x, i) => generateElement(x, reference, i))}
         </Box>
       );
     case "text":
       return (
-        <Text {...node.props}>
+        <Text key={index ? index : ""} {...node.props}>
           {typeof node.children === "string"
             ? node.children
             : (reference[node.children.key] as unknown as string)}
         </Text>
       );
     case "hline":
-      return <HLine {...node.props} />;
+      return <HLine key={index ? index : ""} {...node.props} />;
     case "vline":
-      return <VLine {...node.props} />;
+      return <VLine key={index ? index : ""} {...node.props} />;
     case "image":
-      return <Image {...node.props} />;
+      return <Image key={index ? index : ""} {...node.props} />;
     case "table": {
       const rowList = reference[node.key] as unknown as Record<
         string,
@@ -107,11 +108,11 @@ export function generateElement(
       >[];
 
       return (
-        <table>
+        <table key={index ? index : ""}>
           <tbody>
             {rowList.map((row, i) => (
               <tr key={i} style={node.trProps?.style}>
-                {node.children.map((x) => generateElement(x, row))}
+                {node.children.map((x, i) => generateElement(x, row, i))}
               </tr>
             ))}
           </tbody>
@@ -120,8 +121,8 @@ export function generateElement(
     }
     case "td":
       return (
-        <td style={node.props?.style}>
-          {node.children.map((x) => generateElement(x, reference))}
+        <td key={index ? index : ""} style={node.props?.style}>
+          {node.children.map((x, i) => generateElement(x, reference, i))}
         </td>
       );
 
@@ -130,7 +131,9 @@ export function generateElement(
         string,
         string
       >[];
-      return <>{dataList.map((x) => generateElement(node.children, x))}</>;
+      return (
+        <>{dataList.map((x, i) => generateElement(node.children, x, i))}</>
+      );
     }
 
     default:

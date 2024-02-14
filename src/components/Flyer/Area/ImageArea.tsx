@@ -32,7 +32,7 @@ export const ImageArea = ({ gridArea, data, onImageClick }: ImageAreaProps) => {
       }}
     >
       {imageData.images!.map(({ src, ...x }, i) => (
-        <div key={src} {...x}>
+        <div key={i} {...x}>
           <Image
             src={src}
             onClick={(e) => {
