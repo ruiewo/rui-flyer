@@ -11,7 +11,7 @@ import {
   VLine,
   VLineProps,
 } from "./PdfElements";
-import { FlyerDataValue } from "./schema";
+import { ContentValue } from "./schema";
 
 type ReferenceKey = { key: string };
 
@@ -72,7 +72,7 @@ export type TemplateElement =
 
 export function generateElement(
   node: TemplateElement,
-  reference: FlyerDataValue,
+  reference: ContentValue,
   index?: number | undefined
 ): JSX.Element | null {
   const key = index ?? "";

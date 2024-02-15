@@ -27,7 +27,7 @@ import {
 import { FiImage, FiStar } from "react-icons/fi";
 
 import { useFlyerData } from "../Contexts/FlyerDataProvider";
-import { Area, FlyerDataValue, FlyerImageDataValue } from "../Flyer/schema";
+import { Area, ContentValue, ImageContentValue } from "../Flyer/schema";
 import { NavItem } from "./NavItem";
 
 type DialogMenuProps = {
@@ -65,14 +65,14 @@ const FormModalContent = ({ label, area, type }: FormModalContentProps) => {
 
   const { data, setData } = useFlyerData();
   const areaData = data[area];
-  const methods = useForm<FlyerDataValue>({ defaultValues: areaData });
+  const methods = useForm<ContentValue>({ defaultValues: areaData });
 
   const onSubmit = methods.handleSubmit((data) => {
     setData((x) => ({ ...x, [area]: data }));
     onClose();
   });
 
-  const FormInput = ({ formKey }: { formKey: FieldPath<FlyerDataValue> }) => (
+  const FormInput = ({ formKey }: { formKey: FieldPath<ContentValue> }) => (
     <FormControl mt={3}>
       <FormLabel>{formKey}</FormLabel>
       <Input type="text" {...methods.register(formKey)} />
@@ -208,7 +208,7 @@ const GridLayout = ({
       }}
       onClick={() => {
         setData((x) => {
-          const data = x[area] as FlyerImageDataValue;
+          const data = x[area] as ImageContentValue;
           const newData = {
             ...data,
             props: {

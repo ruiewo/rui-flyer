@@ -12,7 +12,7 @@ import { useRef, useState } from "react";
 import Cropper, { Area } from "react-easy-crop";
 import { getCroppedImg } from "../Flyer/Area/ImageAreaUtil";
 import { useFlyerData } from "../Contexts/FlyerDataProvider";
-import { FlyerImageDataValue } from "../Flyer/schema";
+import { ImageContentValue } from "../Flyer/schema";
 
 export type ImageClopDialogProps = {
   area: string;
@@ -44,8 +44,8 @@ export const ImageCropDialog = ({
   ) => {
     try {
       const croppedImage = await getCroppedImg(imgSrc, croppedAreaPixels);
-      const newImages = (data[area] as FlyerImageDataValue).images!.map(
-        (x, j) => (i === j ? { ...x, src: croppedImage } : x)
+      const newImages = (data[area] as ImageContentValue).images!.map((x, j) =>
+        i === j ? { ...x, src: croppedImage } : x
       );
       setData((x) => ({
         ...x,

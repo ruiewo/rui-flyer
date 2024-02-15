@@ -2,11 +2,11 @@ import { PropsWithChildren, useState } from "react";
 
 import { createContext } from "./createContext";
 
-import { LayoutData } from "../Flyer/schema";
+import { Layout } from "../Flyer/schema";
 
 type LayoutContext = {
-  layout: LayoutData;
-  setLayout: (header: LayoutData) => void;
+  layout: Layout;
+  setLayout: (header: Layout) => void;
 };
 
 const [Provider, useContext] = createContext<LayoutContext>();
@@ -14,8 +14,8 @@ const [Provider, useContext] = createContext<LayoutContext>();
 export const FlyerLayoutProvider = ({
   layout: layoutData,
   children,
-}: PropsWithChildren & { layout: LayoutData }) => {
-  const [layout, setLayout] = useState<LayoutData>(layoutData);
+}: PropsWithChildren & { layout: Layout }) => {
+  const [layout, setLayout] = useState<Layout>(layoutData);
 
   return (
     <Provider

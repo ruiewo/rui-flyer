@@ -2,11 +2,11 @@ import { PropsWithChildren, useState } from "react";
 
 import { createContext } from "./createContext";
 
-import { FlyerData } from "../Flyer/schema";
+import { Content } from "../Flyer/schema";
 
 type FlyerDataContext = {
-  data: FlyerData;
-  setData: React.Dispatch<React.SetStateAction<FlyerData>>;
+  data: Content;
+  setData: React.Dispatch<React.SetStateAction<Content>>;
 };
 
 const [Provider, useContext] = createContext<FlyerDataContext>();
@@ -14,8 +14,8 @@ const [Provider, useContext] = createContext<FlyerDataContext>();
 export const FlyerDataProvider = ({
   data: flyerData,
   children,
-}: PropsWithChildren & { data: FlyerData }) => {
-  const [data, setData] = useState<FlyerData>(flyerData);
+}: PropsWithChildren & { data: Content }) => {
+  const [data, setData] = useState<Content>(flyerData);
 
   return (
     <Provider

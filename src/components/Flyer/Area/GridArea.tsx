@@ -1,10 +1,10 @@
-import { FlyerData } from "../schema";
+import { Content } from "../schema";
 import { TemplateElement, generateElement } from "../template";
 
 type GridAreaProps = {
   gridArea: string;
   template: TemplateElement;
-  data: FlyerData;
+  data: Content;
 };
 
 export const GridArea = ({ gridArea, template, data }: GridAreaProps) => {

@@ -1,9 +1,9 @@
 import { Image } from "../PdfElements";
-import { FlyerData, FlyerImageDataValue } from "../schema";
+import { Content, ImageContentValue } from "../schema";
 
 type ImageAreaProps = {
   gridArea: string;
-  data: FlyerData;
+  data: Content;
   onImageClick: OnImageSelect;
 };
 
@@ -18,7 +18,7 @@ export type OnImageClick = {
 export type OnImageSelect = (props: OnImageClick) => void;
 
 export const ImageArea = ({ gridArea, data, onImageClick }: ImageAreaProps) => {
-  const imageData = data[gridArea] as FlyerImageDataValue;
+  const imageData = data[gridArea] as ImageContentValue;
   imageData.props.style = { ...imageData.props.style, gridArea };
 
   const maxImageCount = imageData.props.count;
