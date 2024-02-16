@@ -53,16 +53,3 @@ export type Definition =
       w: number;
       h: number;
     };
-
-// todo not used. remove?
-export function formatJapaneseCurrency(num: number) {
-  const man = 10000;
-  const oku = man * man;
-  if (num >= oku) {
-    const okuPart = Math.floor(num / oku);
-    const manPart = Math.floor((num % oku) / man);
-    return `${okuPart}億${manPart.toLocaleString()}`;
-  } else {
-    return `${Math.floor(num / man).toLocaleString()}`;
-  }
-}
