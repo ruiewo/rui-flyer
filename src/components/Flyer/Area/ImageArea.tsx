@@ -31,7 +31,11 @@ export const ImageArea = ({ gridArea, data, onImageClick }: ImageAreaProps) => {
             <div
               key={i}
               {...x}
-              style={{ gridArea: `area${i}`, position: "relative" }}
+              style={{
+                gridArea: `area${i}`,
+                position: "relative",
+                cursor: "pointer",
+              }}
             >
               <Image
                 key={i}
