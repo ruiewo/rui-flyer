@@ -60,7 +60,7 @@ export type TemplateElement =
       children: TemplateElement[];
     }
   | {
-      type: "array";
+      type: "list";
       key: string;
       props?: Style;
       children: {
@@ -130,7 +130,7 @@ export function generateElement(
         </td>
       );
 
-    case "array": {
+    case "list": {
       // @ts-ignore
       const dataList = reference[node.key] as unknown as Record<
         string,

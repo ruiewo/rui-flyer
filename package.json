@@ -1,31 +1,46 @@
 {
-  "name": "rui-flyer",
-  "private": true,
+  "name": "@ruiewo/rui-flyer",
   "version": "0.1.0",
+  "description": "A React component to create flyer with easy interactions",
   "type": "module",
+  "author": "ruiewo",
+  "license": "MIT",
+  "keywords": [
+    "react",
+    "flyer"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ruiewo/rui-flyer"
+  },
+  "main": "./dist/index.umd.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build2": "tsc && vite build",
+    "build": "vite build && tsc",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "publish": "npm run build && npm publish"
   },
-  "dependencies": {
-    "dom-to-image": "^2.6.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-easy-crop": "^5.0.5"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "@types/dom-to-image": "^2.6.7",
-    "@types/react": "^18.2.55",
+    "@types/node": "^20.11.19",
+    "@types/react": "^18.2.56",
     "@types/react-dom": "^18.2.19",
-    "@typescript-eslint/eslint-plugin": "^6.21.0",
-    "@typescript-eslint/parser": "^6.21.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.1",
+    "@typescript-eslint/parser": "^7.0.1",
     "@vitejs/plugin-react-swc": "^3.6.0",
     "eslint": "^8.56.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "typescript": "^5.3.3",
-    "vite": "^5.1.1"
+    "vite": "^5.1.3"
   }
 }
