@@ -6,18 +6,19 @@ export type Layout = {
   areas: Area[];
 };
 
-export type Area =
-  | {
-      id: string;
-      text: string;
-      type?: undefined;
-      template: TemplateElement;
-    }
-  | {
-      id: string;
-      text: string;
-      type: "image";
-    };
+export type NormalArea = {
+  id: string;
+  text: string;
+  type?: undefined;
+  template: TemplateElement;
+};
+
+export type ImageArea = {
+  id: string;
+  text: string;
+  type: "image";
+};
+export type Area = NormalArea | ImageArea;
 
 export type Content = Record<string, ContentValue>;
 
