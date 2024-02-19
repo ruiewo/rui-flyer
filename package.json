@@ -1,6 +1,6 @@
 {
   "name": "@ruiewo/rui-flyer",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A React component to create flyer with easy interactions",
   "type": "module",
   "author": "ruiewo",
